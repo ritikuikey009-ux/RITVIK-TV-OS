@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RITVIK TV OS v0.4</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #10121f;
+  color: white;
+  font-family: Arial, sans-serif;
+  padding: 4vh 5vw;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 7vh;
+}
+
+.logo {
+  color: #42d5ff;
+  font-size: clamp(24px, 4vw, 42px);
+  font-weight: bold;
+}
+
+#clock {
+  font-size: clamp(18px, 2.5vw, 28px);
+}
+
+h1 {
+  font-size: clamp(28px, 4vw, 44px);
+}
+
+.subtitle {
+  color: #b7bfd1;
+  font-size: clamp(16px, 2vw, 23px);
+}
+
+h2 {
+  margin-top: 7vh;
+  font-size: clamp(22px, 3vw, 32px);
+}
+
+.apps {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2vw;
+  margin-top: 25px;
+}
+
+.app {
+  background: #222b42;
+  border: 3px solid transparent;
+  color: white;
+  border-radius: 22px;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+  font-size: clamp(15px, 2vw, 23px);
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.app .emoji {
+  font-size: clamp(35px, 5vw, 65px);
+}
+
+.app:focus,
+.app.selected {
+  outline: none;
+  border-color: #42d5ff;
+  background: #30415f;
+  transform: scale(1.04);
+  box-shadow: 0 0 22px #42d5ff55;
+}
+
+#settingsPanel {
+  display: none;
+  background: #222b42;
+  border-radius: 18px;
+  padding: 25px;
+  margin-top: 30px;
+}
+
+footer {
+  margin-top: 10vh;
+  color: #8994aa;
+  font-size: 15px;
+}
+
+@media(max-width: 700px) {
+  body { padding: 20px; }
+  header { margin-bottom: 45px; }
+  .apps { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .app { min-height: 145px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">RITVIK TV OS</div>
+  <div id="clock">00:00:00</div>
+</header>
+
+<h1>Welcome Home 👋</h1>
+<p class="subtitle">Your TV. Your entertainment. Your control.</p>
+
+<h2>My Applications</h2>
+
+<div class="apps">
+
+<a class="app" href="https://www.youtube.com/tv">
+  <span class="emoji">▶️</span>
+  YouTube
+</a>
+
+<a class="app" href="https://www.netflix.com">
+  <span class="emoji">🎬</span>
+  Netflix
+</a>
+
+<a class="app" href="https://www.google.com">
+  <span class="emoji">🌐</span>
+  Browser
+</a>
+
+<a class="app" href="https://www.hotstar.com">
+  <span class="emoji">📺</span>
+  JioHotstar
+</a>
+
+<button class="app" id="settingsBtn">
+  <span class="emoji">⚙️</span>
+  Settings
+</button>
+
+</div>
+
+<div id="settingsPanel">
+  <h2>RITVIK TV OS Settings</h2>
+  <p>Version: 0.4</p>
+  <p>Device: Samsung Smart TV Browser</p>
+  <p>Remote Navigation: Enabled</p>
+  <button onclick="closeSettings()">Close Settings</button>
+</div>
+
+<footer>
+  RITVIK TV OS | Samsung Edition | v0.4
+</footer>
+
+<script>
+const apps = [...document.querySelectorAll(".app")];
+let current = 0;
+
+function selectApp(index) {
+  current = (index + apps.length) % apps.length;
+
+  apps.forEach(app => app.classList.remove("selected"));
+
+  apps[current].classList.add("selected");
+  apps[current].focus();
+}
+
+function openApp() {
+  apps[current].click();
+}
+
+function updateClock() {
+  document.getElementById("clock").textContent =
+    new Date().toLocaleTimeString();
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+
+document.addEventListener("keydown", function(e) {
+
+  const key = e.key;
+
+  if (key === "ArrowRight") {
+    e.preventDefault();
+    selectApp(current + 1);
+  }
+
+  if (key === "ArrowLeft") {
+    e.preventDefault();
+    selectApp(current - 1);
+  }
+
+  if (key === "ArrowDown") {
+    e.preventDefault();
+    selectApp(current + 5);
+  }
+
+  if (key === "ArrowUp") {
+    e.preventDefault();
+    selectApp(current - 5);
+  }
+
+  if (key === "Enter") {
+    e.preventDefault();
+    openApp();
+  }
+
+  if (key === "Escape" || key === "Backspace") {
+    closeSettings();
+  }
+});
+
+document.getElementById("settingsBtn")
+.addEventListener("click", function() {
+  document.getElementById("settingsPanel").style.display = "block";
+});
+
+function closeSettings() {
+  document.getElementById("settingsPanel").style.display = "none";
+}
+
+selectApp(0);
+</script>
+
+</body>
+</html>
