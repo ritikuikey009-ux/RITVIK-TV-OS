@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RITVIK TV OS</title>
+
+<style>
+* {box-sizing:border-box}
+
+body {
+ margin:0;
+ padding:4vw;
+ background:#0c1020;
+ color:white;
+ font-family:Arial,sans-serif;
+ min-height:100vh;
+}
+
+header {
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+}
+
+.logo {
+ font-size:clamp(24px,3vw,45px);
+ color:#55d9ff;
+ font-weight:bold;
+}
+
+#clock {font-size:clamp(18px,2vw,28px)}
+
+h2 {
+ font-size:clamp(25px,3vw,38px);
+ margin-top:6vh;
+}
+
+.apps {
+ display:grid;
+ grid-template-columns:repeat(5,minmax(0,1fr));
+ gap:2vw;
+ margin-top:30px;
+}
+
+.app {
+ min-height:170px;
+ background:#202b43;
+ border:4px solid transparent;
+ border-radius:20px;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ gap:15px;
+ font-size:clamp(17px,2vw,26px);
+ cursor:pointer;
+}
+
+.app:focus {
+ outline:none;
+ border-color:#55d9ff;
+ background:#304765;
+ transform:scale(1.06);
+ box-shadow:0 0 25px #55d9ff66;
+}
+
+.emoji {font-size:55px}
+
+footer {
+ position:fixed;
+ bottom:20px;
+ left:4vw;
+ color:#8794ac;
+ font-size:16px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">RITVIK TV OS</div>
+ <div id="clock"></div>
+</header>
+
+<h2>Welcome Home</h2>
+<p>Your TV. Your entertainment. Your control.</p>
+
+<h2>My Applications</h2>
+
+<div class="apps">
+
+<div class="app" tabindex="0"
+onclick="openApp('https://www.youtube.com/tv')">
+<span class="emoji">▶️</span>YouTube
+</div>
+
+<div class="app" tabindex="0"
+onclick="openApp('https://www.netflix.com')">
+<span class="emoji">🎬</span>Netflix
+</div>
+
+<div class="app" tabindex="0"
+onclick="openApp('https://www.google.com')">
+<span class="emoji">🌐</span>Browser
+</div>
+
+<div class="app" tabindex="0"
+onclick="openApp('https://www.hotstar.com')">
+<span class="emoji">📺</span>JioHotstar
+</div>
+
+<div class="app" tabindex="0"
+onclick="alert('RITVIK Settings coming soon!')">
+<span class="emoji">⚙️</span>Settings
+</div>
+
+</div>
+
+<footer>
+RITVIK TV OS | Samsung Edition | v0.3
+</footer>
+
+<script>
+function updateClock(){
+ document.getElementById("clock").textContent =
+ new Date().toLocaleTimeString();
+}
+updateClock();
+setInterval(updateClock,1000);
+
+function openApp(url){
+ window.location.href=url;
+}
+
+const cards=[...document.querySelectorAll(".app")];
+
+cards[0].focus();
+
+document.addEventListener("keydown",function(e){
+
+ let i=cards.indexOf(document.activeElement);
+ if(i<0)i=0;
+
+ if(e.key==="ArrowRight")
+ i=Math.min(i+1,cards.length-1);
+
+ else if(e.key==="ArrowLeft")
+ i=Math.max(i-1,0);
+
+ else if(e.key==="ArrowDown")
+ i=Math.min(i+5,cards.length-1);
+
+ else if(e.key==="ArrowUp")
+ i=Math.max(i-5,0);
+
+ else return;
+
+ e.preventDefault();
+ cards[i].focus();
+});
+</script>
+
+</body>
+</html>
